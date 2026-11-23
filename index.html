@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>KOSMOS SHOP</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- МОДАЛЬНОЕ ОКНО ПРОВЕРКИ ВОЗРАСТА 18+ -->
+  <div id="age-modal" class="modal-overlay hidden">
+    <div class="age-box">
+      <div class="age-badge">18+</div>
+      <h2>Подтверждение возраста</h2>
+      <p>Магазин <b>KOSMOS SHOP</b> предназначен исключительно для совершеннолетних пользователей (18+).</p>
+      <div class="age-actions">
+        <button id="age-confirm-btn" class="primary-btn">Мне исполнилось 18 лет</button>
+        <button id="age-deny-btn" class="deny-btn">Мне меньше 18</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ВСПЛЫВАЮЩЕЕ УВЕДОМЛЕНИЕ -->
+  <div id="toast" class="toast hidden">Добавлено в корзину</div>
+
+  <!-- ШАПКА -->
+  <header class="app-header">
+    <h1>KOSMOS SHOP <span class="rocket">🚀</span></h1>
+  </header>
+
+  <!-- ВКЛАДКА 1: ГЛАВНАЯ -->
+  <main id="tab-home" class="tab-content active">
+
+    <!-- АВТО-ВИТРИНА STORIES (7.5 СЕК) -->
+    <section class="showcase-card" id="showcase">
+      <div class="story-bars" id="story-bars"></div>
+      <div class="slides-container" id="slides-container">
+
+        <!-- Слайд 1 -->
+        <div class="story-slide active" style="background: radial-gradient(circle at 25% 50%, #6b21a8 0%, #240a40 60%, #0d0517 100%);">
+          <div class="slide-visual">
+            <img src="/images/ANIMMA80mg" alt="Доставка" onerror="this.style.display='none'" />
+          </div>
+          <div class="slide-text">
+            <span class="slide-title">ДОСТАВКА</span>
+            <span class="slide-subtitle">ПО ЧЕЛЯБИНСКУ:</span>
+            <span class="slide-highlight">ЧТЗ И ЦЕНТР</span>
+          </div>
+        </div>
+
+        <!-- Слайд 2 -->
+        <div class="story-slide" style="background: radial-gradient(circle at 25% 50%, #1d4ed8 0%, #111c38 65%, #090d16 100%);">
+          <div class="slide-visual">
+            <img src="/images/XROS5mini1" alt="XROS 5 Mini" onerror="this.style.display='none'" />
+          </div>
+          <div class="slide-text">
+            <span class="slide-title">ПОД-СИСТЕМЫ</span>
+            <span class="slide-subtitle">XROS 5/6 MINI & PASITO II</span>
+            <span class="slide-highlight">ВЫБОР ЦВЕТА</span>
+          </div>
+        </div>
+
+        <!-- Слайд 3 -->
+        <div class="story-slide" style="background: radial-gradient(circle at 25% 50%, #be185d 0%, #310820 65%, #11030b 100%);">
+          <div class="slide-visual">
+            <img src="/images/podonki_podgon" alt="Жидкости" onerror="this.style.display='none'" />
+          </div>
+          <div class="slide-text">
+            <span class="slide-title">ЖИДКОСТИ</span>
+            <span class="slide-subtitle">50 • 60 • 70 • 80 МГ</span>
+            <span class="slide-highlight">ОТ 400 ₽</span>
+          </div>
+        </div>
+
+        <!-- Слайд 4 -->
+        <div class="story-slide" style="background: radial-gradient(circle at 25% 50%, #047857 0%, #072820 65%, #04100d 100%);">
+          <div class="slide-visual">
+            <img src="/images/YOOZ25000" alt="Одноразки" onerror="this.style.display='none'" />
+          </div>
+          <div class="slide-text">
+            <span class="slide-title">ОДНОРАЗКИ</span>
+            <span class="slide-subtitle">PILLOW 40K • YOOZ 25K</span>
+            <span class="slide-highlight">ОТ 400 ₽</span>
+          </div>
+        </div>
+
+        <!-- Слайд 5 -->
+        <div class="story-slide" style="background: radial-gradient(circle at 25% 50%, #0e7490 0%, #0b2230 65%, #061017 100%);">
+          <div class="slide-visual">
+            <img src="/images/kartridj0.6" alt="Расходники" onerror="this.style.display='none'" />
+          </div>
+          <div class="slide-text">
+            <span class="slide-title">РАСХОДНИКИ</span>
+            <span class="slide-subtitle">КАРТРИДЖИ И ИСПАРЫ</span>
+            <span class="slide-highlight">ВСЕ ПО 300 ₽</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="story-nav-left" id="story-prev"></div>
+      <div class="story-nav-right" id="story-next"></div>
+    </section>
+
+    <!-- СТРОКА ПОИСКА -->
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input type="text" id="search-input" placeholder="Поиск по названию, вкусу или цвету..." />
+    </div>
+
+    <!-- 5 НЕОНОВЫХ КАТЕГОРИЙ -->
+    <section class="categories-row">
+      <button class="cat-btn" data-cat="liquid">
+        <div class="cat-icon neon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+            <path d="M8.5 14.5c1.5 1.5 4.5 1.5 7 0"></path>
+          </svg>
+        </div>
+        <span>Жижи</span>
+      </button>
+
+      <button class="cat-btn" data-cat="pods">
+        <div class="cat-icon neon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="9" y="5" width="6" height="16" rx="1.5"></rect>
+            <path d="M10.5 5V3h3v2"></path>
+          </svg>
+        </div>
+        <span>Поды</span>
+      </button>
+
+      <button class="cat-btn" data-cat="disposable">
+        <div class="cat-icon neon-pink">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="8.5" y="4" width="7" height="17" rx="2"></rect>
+            <line x1="8.5" y1="8.5" x2="15.5" y2="8.5"></line>
+            <circle cx="12" cy="14" r="1"></circle>
+          </svg>
+        </div>
+        <span>Одноразки</span>
+      </button>
+
+      <button class="cat-btn" data-cat="consumable">
+        <div class="cat-icon neon-cyan">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="5" y="7" width="6" height="13" rx="1"></rect>
+            <path d="M6.5 7V4.5h3V7"></path>
+            <rect x="14" y="10" width="5" height="10" rx="1"></rect>
+            <path d="M15.5 10V5.5h2V10"></path>
+          </svg>
+        </div>
+        <span>Расходники</span>
+      </button>
+
+      <button class="cat-btn" data-cat="snus">
+        <div class="cat-icon neon-green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="8"></circle>
+            <circle cx="12" cy="12" r="3.5"></circle>
+          </svg>
+        </div>
+        <span>Снюс / Пластинки</span>
+      </button>
+    </section>
+
+    <!-- ПОДФИЛЬТРЫ (КРЕПОСТЬ 50-80 МГ / БРЕНДЫ) -->
+    <div id="subfilters-bar" class="subfilters-bar hidden"></div>
+
+    <!-- ЗАГОЛОВОК СЕКЦИИ -->
+    <div class="section-header">
+      <h2 id="catalog-title">Популярное</h2>
+      <button id="reset-filter-btn" class="reset-link hidden">Показать все</button>
+    </div>
+
+    <!-- СЕТКА ТОВАРОВ (2 КОЛОНКИ) -->
+    <section id="products-grid" class="products-grid"></section>
+  </main>
+
+  <!-- ВКЛАДКА 2: ИЗБРАННОЕ -->
+  <main id="tab-favorites" class="tab-content">
+    <div class="section-header">
+      <h2>Избранное 💜</h2>
+    </div>
+    <section id="favorites-grid" class="products-grid"></section>
+  </main>
+
+  <!-- ВКЛАДКА 3: КОРЗИНА И ОФОРМЛЕНИЕ -->
+  <main id="tab-cart" class="tab-content">
+    <div class="section-header">
+      <h2>Корзина 🛒</h2>
+      <button id="clear-cart-btn" class="reset-link hidden">Очистить</button>
+    </div>
+
+    <div id="cart-items-list" class="cart-list"></div>
+
+    <div id="checkout-form" class="checkout-card hidden">
+      <h3>Оформление доставки (Челябинск)</h3>
+
+      <!-- Выбор даты -->
+      <label class="field-label">День получения</label>
+      <div class="pill-group" id="date-pills">
+        <button type="button" class="pill-btn active" data-date="Сегодня">Сегодня</button>
+        <button type="button" class="pill-btn" data-date="Завтра">Завтра</button>
+        <button type="button" class="pill-btn" data-date="custom">Выбрать дату</button>
+      </div>
+      <input type="date" id="custom-date-input" class="text-input hidden" style="margin-top:8px;" />
+
+      <!-- 30-минутные слоты -->
+      <label class="field-label">Временной слот (30 мин, ЧЛБ UTC+5)</label>
+      <select id="time-slot-select" class="text-input"></select>
+
+      <!-- Район + карта -->
+      <div class="row-between">
+        <label class="field-label">Район доставки</label>
+        <button type="button" id="open-map-btn" class="map-link-btn">🗺 Зоны доставки на карте</button>
+      </div>
+      <select id="district-select" class="text-input">
+        <option value="ЧТЗ">ЧТЗ</option>
+        <option value="Центральный">Центральный</option>
+        <option value="Северо-Запад">Северо-Запад</option>
+        <option value="Теплотех">Теплотех</option>
+        <option value="Ленинский">Ленинский</option>
+        <option value="Советский">Советский</option>
+      </select>
+
+      <!-- Быстрые ориентиры -->
+      <div id="landmark-chips" class="subfilters-bar" style="margin-top:8px; padding-bottom:4px;"></div>
+
+      <!-- Точка встречи / адрес -->
+      <label class="field-label">Точка встречи или адрес</label>
+      <input type="text" id="address-input" class="text-input" placeholder="Выберите ориентир выше или введите адрес..." />
+
+      <!-- Способ оплаты -->
+      <label class="field-label">Способ оплаты</label>
+      <div class="pill-group" id="payment-pills">
+        <button type="button" class="pill-btn active" data-pay="Перевод">Перевод</button>
+        <button type="button" class="pill-btn" data-pay="Наличные">Наличные</button>
+        <button type="button" class="pill-btn" data-pay="Перевод + Наличные">Перевод + Нал</button>
+      </div>
+
+      <!-- Комментарий -->
+      <label class="field-label">Комментарий к заказу</label>
+      <textarea id="comment-input" class="text-input" rows="2" placeholder="Дополнительные пожелания к заказу или встрече..."></textarea>
+
+      <div class="cart-summary-row">
+        <span>К оплате:</span>
+        <strong id="cart-total-sum">0 ₽</strong>
+      </div>
+
+      <button type="button" id="submit-order-btn" class="primary-btn">Подтвердить заказ</button>
+    </div>
+  </main>
+
+  <!-- ВКЛАДКА 4: ПРОФИЛЬ И ИСТОРИЯ ЗАКАЗОВ -->
+  <main id="tab-profile" class="tab-content">
+    <div class="profile-card">
+      <div class="profile-avatar">🚀</div>
+      <h3 id="profile-name">Покупатель</h3>
+      <p id="profile-username" class="muted">@kosmos_user</p>
+
+      <div class="profile-info-list">
+        <div class="info-item">
+          <span>📍 Город:</span>
+          <strong>Челябинск (UTC+5)</strong>
+        </div>
+        <div class="info-item">
+          <span>🕒 Таймслоты:</span>
+          <strong>12:00 – 22:00 (шаг 30 мин)</strong>
+        </div>
+        <div class="info-item">
+          <span>📦 В наличии на витрине:</span>
+          <strong id="profile-total-stock">122 шт.</strong>
+        </div>
+      </div>
+
+      <button type="button" id="profile-map-btn" class="secondary-btn">🗺 Открыть карту зон доставки</button>
+    </div>
+
+    <div class="section-header" style="margin-top: 18px;">
+      <h2>Мои заказы 📋</h2>
+    </div>
+    <div id="order-history-list" class="cart-list"></div>
+  </main>
+
+  <!-- МОДАЛЬНОЕ ОКНО КАРТОЧКИ ТОВАРА (ВЫБОР ВКУСА / ЦВЕТА) -->
+  <div id="product-modal" class="modal-overlay hidden">
+    <div class="sheet-box">
+      <button class="close-modal-btn" id="close-product-modal">✕</button>
+      <div id="modal-gallery" class="modal-gallery"></div>
+      <h3 id="modal-prod-title"></h3>
+      <p id="modal-prod-sub" class="muted" style="margin: 4px 0 10px;"></p>
+
+      <!-- Контейнер выбора вкуса или цвета -->
+      <div id="modal-options-wrap" class="hidden">
+        <label id="modal-options-label" class="field-label">Выберите вкус / расцветку:</label>
+        <div id="modal-options-list" class="options-grid"></div>
+      </div>
+
+      <div class="modal-price-row" style="margin-top: 14px;">
+        <span id="modal-prod-price" class="modal-price"></span>
+        <button id="modal-add-btn" class="primary-btn" style="width: auto; padding: 12px 24px;">＋ В корзину</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ИНТЕРАКТИВНАЯ КАРТА ЗОН ДОСТАВКИ -->
+  <div id="map-modal" class="modal-overlay hidden">
+    <div class="map-box">
+      <div class="map-header">
+        <strong>Карта зон доставки (Челябинск)</strong>
+        <button class="close-modal-btn" id="close-map-modal" style="position:static;">✕</button>
+      </div>
+      <div class="map-viewport" id="map-viewport">
+        <img id="map-image" src="/images/map" alt="Карта доставки Челябинск" />
+      </div>
+      <div class="map-controls">
+        <button type="button" id="zoom-in-btn">＋ Приблизить</button>
+        <button type="button" id="zoom-reset-btn">Сбросить</button>
+        <button type="button" id="zoom-out-btn">－ Отдалить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- НИЖНЯЯ НАВИГАЦИЯ -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-tab="tab-home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9.5z"></path>
+      </svg>
+      <span>Главная</span>
+    </button>
+    <button class="nav-item" data-tab="tab-favorites">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+      </svg>
+      <span>Избранное</span>
+    </button>
+    <button class="nav-item" data-tab="tab-cart">
+      <div class="nav-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span id="cart-badge" class="cart-badge hidden">0</span>
+      </div>
+      <span>Корзина</span>
+    </button>
+    <button class="nav-item" data-tab="tab-profile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      <span>Профиль</span>
+    </button>
+  </nav>
+  <div class="bot-handle-footer">@KOSMOS1_SHOP_BOT</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
